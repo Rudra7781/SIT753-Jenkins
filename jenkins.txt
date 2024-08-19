@@ -14,11 +14,11 @@ pipeline {
                 echo "Compile the code and generate any necessary artifacts"
             }
             post{
-                success{
-                    emailext(
-                        subject: "Integration Tests on Staging - ${currentBuild.currentResult}",
-                        body: "Integration tests on staging have ${currentBuild.currentResult}. Please review the attached logs.",
-                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                always{
+                   emailext(
+                        to: "patelrudra2306@gmail.com",
+                        subject: "${STAGE_NAME} Stage Complete - SUCCESS",
+                        body: "The ${STAGE_NAME} stage has completed successfully. AUTOMATIC 4.1!!!",
                         attachLog: true
                     )
                 }
