@@ -17,7 +17,7 @@ pipeline {
                 success{
                     mail to: "patelrudra2306@gmail.com",
                     subject: "Build Stage Complete",
-                    body: "AUTOMATIC 2.0!!!"
+                    body: "AUTOMATIC 3.0!!!"
                 }
             }
         }
