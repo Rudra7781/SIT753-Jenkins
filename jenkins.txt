@@ -16,7 +16,7 @@ pipeline {
             post{
                 always{
                    emailext(
-                        mail to: "patelrudra2306@gmail.com",
+                        to: "patelrudra2306@gmail.com",
                         subject: "Stage Complete - SUCCESS",
                         body: "The stage has completed successfully. AUTOMATIC 4.1!!!"
                     )
