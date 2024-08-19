@@ -15,10 +15,12 @@ pipeline {
             }
             post{
                 success{
-                    mail to: "patelrudra2306@gmail.com",
-                    subject: "Build Stage Complete",
-                    body: "AUTOMATIC 4.1!!!",
-                    attachLog: true
+                    emailext(
+                        subject: "Integration Tests on Staging - ${currentBuild.currentResult}",
+                        body: "Integration tests on staging have ${currentBuild.currentResult}. Please review the attached logs.",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                        attachLog: true
+                    )
                 }
             }
         }
