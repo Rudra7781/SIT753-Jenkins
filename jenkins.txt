@@ -17,8 +17,8 @@ pipeline {
                 always{
                    emailext(
                         to: "patelrudra2306@gmail.com",
-                        subject: "${STAGE_NAME} Stage Complete - SUCCESS",
-                        body: "The ${STAGE_NAME} stage has completed successfully. AUTOMATIC 4.1!!!"
+                        subject: "${DIRECTORY_PATH} Stage Complete - SUCCESS",
+                        body: "The ${DIRECTORY_PATH} stage has completed successfully. AUTOMATIC 4.1!!!"
                     )
                 }
             }
