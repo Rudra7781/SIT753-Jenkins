@@ -13,12 +13,19 @@ pipeline {
                 echo "Fetch the source code from ${env.DIRECTORY_PATH}"
                 echo "Compile the code and generate any necessary artifacts"
             }
+            post{
+                mail to: "patelrudra2306@gmail.com",
+                subject: "Build Stage Complete",
+                body: "GOOD WORK !!!"
+            }
         }
         stage('Test') {
             steps {
                 echo "Running unit tests"
                 echo "Running integration tests"
             }
+
+        
         }
         stage('Code Quality Check') {
             steps {
