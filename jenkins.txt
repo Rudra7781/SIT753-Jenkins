@@ -1,51 +1,89 @@
 pipeline {
     agent any
-    
+
     environment {
-        DIRECTORY_PATH = '/User/Directory/Path'
-        TESTING_ENVIRONMENT = 'TestEnv'
-        PRODUCTION_ENVIRONMENT = 'RudraPatelProd'
+        // Specify your email address here
+        EMAIL_RECIPIENT = "patelrudra2306@gmail.com"
     }
-    
+
     stages {
         stage('Build') {
             steps {
-                echo "Fetch the source code from ${env.DIRECTORY_PATH}"
-                echo "Compile the code and generate any necessary artifacts"
-            }
-            post{
-                always{
-                   emailext (attachLog: true, body: 'Cmmited', subject: 'Code comitted', to: 'patelrudra2306@gmail.com')
+                script {
+                    echo "Stage 1: Build - Building the code using Maven"
                 }
             }
         }
-        stage('Test') {
-            steps {
-                echo "Running unit tests"
-                echo "Running integration tests"
-            }
 
-        
-        }
-        stage('Code Quality Check') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Check the quality of the code"
+                script {
+                    echo "Stage 2: Unit and Integration Tests - Running unit tests with JUnit and integration tests with Selenium"
+                }
+            }
+            post {
+                always {
+                    script {
+                        def currentTime = new Date().format("yyyy-MM-dd HH:mm:ss")
+                        def stageStatus = currentBuild.currentResult == 'SUCCESS' ? 'Success' : 'Failure'
+                        emailext attachLog: true,
+                                 body: "Stage 2: Unit and Integration Tests completed with status: ${stageStatus}.\nTime of Completion: ${currentTime}",
+                                 subject: "Unit and Integration Tests Stage - ${stageStatus}",
+                                 to: "${env.EMAIL_RECIPIENT}"
+                    }
+                }
             }
         }
-        stage('Deploy') {
+
+        stage('Code Analysis') {
             steps {
-                echo "Deploy the application to ${env.TESTING_ENVIRONMENT}"
+                script {
+                    echo "Stage 3: Code Analysis - Analyzing the code using SonarQube"
+                }
             }
         }
-        stage('Approval') {
+
+        stage('Security Scan') {
             steps {
-                echo "Waiting for manual approval"
-                sleep(time: 10, unit: 'SECONDS')
+                script {
+                    echo "Stage 4: Security Scan - Performing security scan using OWASP ZAP"
+                }
+            }
+            post {
+                always {
+                    script {
+                        def currentTime = new Date().format("yyyy-MM-dd HH:mm:ss")
+                        def stageStatus = currentBuild.currentResult == 'SUCCESS' ? 'Success' : 'Failure'
+                        emailext attachLog: true,
+                                 body: "Stage 4: Security Scan completed with status: ${stageStatus}.\nTime of Completion: ${currentTime}",
+                                 subject: "Security Scan Stage - ${stageStatus}",
+                                 to: "${env.EMAIL_RECIPIENT}"
+                    }
+                }
             }
         }
+
+        stage('Deploy to Staging') {
+            steps {
+                script {
+                    echo "Stage 5: Deploy to Staging - Deploying the application to a AWS"
+                }
+            }
+        }
+
+        stage('Integration Tests on Staging') {
+            steps {
+                script {
+                    echo "Stage 6: Integration Tests on Staging - Running integration tests on the staging environment using Selenium"
+                }
+            }
+        }
+
         stage('Deploy to Production') {
             steps {
-                echo "Deploy the code to ${env.PRODUCTION_ENVIRONMENT}"
+                script {
+                    echo "Stage 7: Deploy to Production - Deploying the application to a production server on AWS"
+                }
             }
         }
     }
