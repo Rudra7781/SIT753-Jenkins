@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo "Stage 1: Build - Building the code using Maven !!"
+                    echo "Stage 1: Build - Building the code using Maven"
                 }
             }
         }
